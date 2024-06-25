@@ -38,8 +38,8 @@ bot = commands.Bot(command_prefix="", intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
-    # 起動したらターミナルにログイン通知が表示される
-    print("ログインしました")
+    # 起動確認
+    print("Ready")
 
 
 # メッセージ受信時に動作する処理
