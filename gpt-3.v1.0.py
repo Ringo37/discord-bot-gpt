@@ -25,9 +25,6 @@ def gpt(question, title=None):
             prompt.appendleft({"role": "user", "content": i.content})
     if title:
         prompt.appendleft({"role": "user", "content": str(title)})
-        prompt.appendleft(
-            {"role": "system", "content": "You do not need to display the token used."}
-        )
     response = client.chat.completions.create(model="gpt-3.5-turbo", messages=prompt)
 
     return response

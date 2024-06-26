@@ -19,7 +19,7 @@ client = openai.OpenAI(
 def gpt(question, title=None, urls=None):
     prompt = deque()
     for i in question:
-        if str(i.author) == os.getenv("BOT_NAME") and str(i.content) != "":
+        if i.author.id == int(os.getenv("BOT_ID")) and str(i.content) != "":
             prompt.appendleft({"role": "assistant", "content": i.content})
         elif str(i.content) != "" and urls == None:
             prompt.appendleft({"role": "user", "content": i.content})

@@ -19,7 +19,9 @@ client = openai.OpenAI(
 def gpt(question, title=None):
     prompt = deque()
     for i in question:
-        if str(i.author) == os.getenv("BOT_NAME") and not i.content:
+        print(i.author.id)
+        if i.author.id == int(os.getenv("BOT_ID")) and i.content:
+            print(13)
             prompt.appendleft({"role": "assistant", "content": i.content})
         elif i.content and not i.attachments:
             prompt.appendleft({"role": "user", "content": i.content})
@@ -33,6 +35,7 @@ def gpt(question, title=None):
             prompt.appendleft({"role": "user", "content":image_content})
     if title:
         prompt.appendleft({"role": "user", "content": str(title)})
+    print(prompt)
     response = client.chat.completions.create(model="gpt-4o", messages=prompt)
 
     return response
@@ -61,7 +64,7 @@ async def on_message(message):
         if response.usage.total_tokens >= 2000:
             color = 0xFF3333
         embed = discord.Embed(
-            title=str(response.usage.total_tokens) + " token used", color=color
+            title=str(response.usage.total_tokens) + " tokens used", color=color
         )
         thread = await channel.create_thread(name=message.content, reason=None)
         link = thread.mention
@@ -76,7 +79,7 @@ async def on_message(message):
         if response.usage.total_tokens >= 2000:
             color = 0xFF3333
         embed = discord.Embed(
-            title=str(response.usage.total_tokens) + " token used", color=color
+            title=str(response.usage.total_tokens) + " tokens used", color=color
         )
         await message.channel.send(response.choices[0].message.content)
         await message.channel.send(embed=embed)

@@ -26,9 +26,6 @@ def gpt(question, title=None):
             prompt.appendleft({"role": "user", "content": i.content})
     if title:
         prompt.appendleft({"role": "user", "content": str(title)})
-        prompt.appendleft(
-            {"role": "system", "content": "You do not need to display the token used."}
-        )
     response = client.chat.completions.create(model="gpt-3.5-turbo", messages=prompt)
 
     return response
@@ -57,7 +54,7 @@ async def on_message(message):
         if response.usage.total_tokens >= 2000:
             color = 0xFF3333
         embed = discord.Embed(
-            title="(" + str(response.usage.total_tokens) + " token used)", color=color
+            title=str(response.usage.total_tokens) + " tokens used", color=color
         )
         thread = await channel.create_thread(name=message.content, reason=None)
         link = thread.mention
@@ -73,7 +70,7 @@ async def on_message(message):
         if response.usage.total_tokens >= 2000:
             color = 0xFF3333
         embed = discord.Embed(
-            title="(" + str(response.usage.total_tokens) + " token used)", color=color
+            title=str(response.usage.total_tokens) + " tokens used", color=color
         )
         print(response.usage)
         await message.channel.send(response.choices[0].message.content)
